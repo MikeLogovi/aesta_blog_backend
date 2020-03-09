@@ -13,7 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('roles.index');
+        $roles=Role::all();
+        return view('roles.index',compact('roles'));
     }
 
     /**
@@ -34,7 +35,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('isAdmin');
+        //$this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required|unique:roles'
         ]);
@@ -42,6 +43,7 @@ class RoleController extends Controller
         $role->name=$request->name;
         $role->save();
         session()->flash('Message', 'Role created successfully');
+    
         return redirect()->back();
     }
 
@@ -98,8 +100,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {   
-        $this->authorize('isAdmin');
-        $role=Departement::findOrFail($id);
+        //$this->authorize('isAdmin');
+        $role=Role::findOrFail($id);
         $role->delete();
         session()->flash('Message', 'Role destroyed successfully');
         return redirect()->back();

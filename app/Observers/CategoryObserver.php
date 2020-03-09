@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Category;
-
+use Illuminate\Support\Str;
 class CategoryObserver
 {
     /**
@@ -14,9 +14,9 @@ class CategoryObserver
      */
     public function created(Category $category)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $category->slug=str_slug($category->name);
-        }
+        $category->slug=Str::slug($category->name);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**
@@ -27,9 +27,9 @@ class CategoryObserver
      */
     public function updated(Category $category)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $category->slug=str_slug($category->name);
-        }
+        $category->slug=Str::slug($category->name);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**

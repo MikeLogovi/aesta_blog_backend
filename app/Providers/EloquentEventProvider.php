@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Observers\DepartmentObserver;
 class EloquentEventProvider extends ServiceProvider
 {
     /**
@@ -13,12 +14,8 @@ class EloquentEventProvider extends ServiceProvider
      */
     public function register()
     {
-        App\User::observe(App\Observer\UserObserver::class);
-        App\Models\Article::observe(App\Observer\ArticleObserver::class);
-        App\Models\Department::observe(App\Observer\DepartmentObserver::class);
-        App\Models\Category::observe(App\Observer\CategoryObserver::class);
     }
-
+    
     /**
      * Bootstrap services.
      *
@@ -27,5 +24,9 @@ class EloquentEventProvider extends ServiceProvider
     public function boot()
     {
         //
+        \App\User::observe(\App\Observers\UserObserver::class);
+        \App\Models\Article::observe(\App\Observers\ArticleObserver::class);
+        \App\Models\Department::observe(\App\Observers\DepartmentObserver::class);
+       \App\Models\Category::observe(\App\Observers\CategoryObserver::class);
     }
 }

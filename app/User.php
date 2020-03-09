@@ -37,12 +37,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function roles(){
-        return $this->belongsToMany(App\Models\Role::class);
+        return $this->belongsToMany(\App\Models\Role::class);
     }
     public function articles(){
-        return $this->hasMany(App\Models\Article::class);
+        return $this->hasMany(\App\Models\Article::class);
     }
     public function categories(){
-        return $this->hasMany(App\Models\Category::class);
+        return $this->hasMany(\App\Models\Category::class);
     }
 }

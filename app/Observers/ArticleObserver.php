@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Article;
-
+use Illuminate\Support\Str;
 class ArticleObserver
 {
     /**
@@ -14,9 +14,9 @@ class ArticleObserver
      */
     public function creating(Article $article)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $article->slug=str_slug($article->title);
-        }
+        $article->slug=Str::slug($article->title);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**
@@ -27,9 +27,9 @@ class ArticleObserver
      */
     public function updating(Article $article)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $article->slug=str_slug($article->title);
-        }
+        $article->slug=Str::slug($article->title);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**

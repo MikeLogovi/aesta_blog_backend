@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Department;
+use Illuminate\Support\Facades\Storage;
+
 class DepartmentController extends Controller
 {
     /**
@@ -35,16 +37,16 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('isAdmin');
+        //$this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required|unique:departments',
-            'picture'=>'required|file|img'
+            'picture'=>'required|file|image'
         ]);
+        $department = new Department;
         if($request->hasfile('picture')&& $request->file('picture')->isValid()){
             $path=fileUpload($request->file('picture'),'departments_img');
-            $article->picture=$path;
+            $department->picture=$path;
         }
-        $department = new Department;
         $department->name=$request->name;
         $department->save();
         session()->flash('Message', 'Department created successfully');
@@ -82,15 +84,15 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {   
-        $this->authorize('isAdmin');
+        //$this->authorize('isAdmin');
         if(!empty($request->name)){
             $this->validate($request,[
-                'name'=>'required|unique:departments'
+                'name'=>'unique:departments'
             ]);
             $department->name=$request->name;    
         }
         if(!empty($request->picture)){
-            $path=unlinkAndUpload($request->file('picture'),$article->picture,'departments_img');
+            $path=unlinkAndUpload($request->file('picture'),$department->picture,'departments_img');
             $department->picture=$path;
         }
         $department->save();
@@ -106,8 +108,8 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {   
-        $this->authorize('isAdmin');
-        $department=Departement::findOrFail($id);
+        //$this->authorize('isAdmin');
+        $department=Department::findOrFail($id);
         Storage::disk('public')->delete($department->picture);
 
         $department->delete();

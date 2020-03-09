@@ -30,30 +30,39 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Creation Date</th>
-                                <th scope="col"></th>
-                            </tr>
+                                <th scope="col">Updated at</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Actions</th>                           
+                             </tr>
                         </thead>
                         <tbody>
-                                                                <tr>
-                                    <td>Admin Admin</td>
+                            @foreach($categories as $category)
+                            <tr>
+                                    <td>{{$category->name}}</td>
                                     <td>
-                                        <a href="mailto:admin@argon.com">admin@argon.com</a>
+                                       {{$category->updated_at}}
                                     </td>
-                                    <td>12/02/2020 11:00</td>
+                                    <td>{{$category->created_at}}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                                                                        <a class="dropdown-item" href="">Edit</a>
-                                                                                                </div>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-center">
+                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#categoryEdit{{$category->id}}">Edit</button>                           
+                                                 <form method="post" action="{{route('categories.destroy',$category->id)}}" class="form_delete">
+                                                   {{method_field('delete')}}
+                                                   {{csrf_field()}}
+                                                   <button class="btn btn-danger" type="submit" >Delete</button>
+                                                 </form>
+                                            </div>
+                                            @include('includes.categories.edit',['category'=>$category])
+
                                         </div>
                                     </td>
-                                </tr>
-                                                        </tbody>
+                            </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
                 <div class="card-footer py-4">

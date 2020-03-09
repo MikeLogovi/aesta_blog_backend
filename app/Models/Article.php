@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    use partage;
-    public $fillable=['title','slug','picture','htmlCode',];
+    public function getRouteKeyName(){
+        return 'slug';
+    }
+    public $fillable=['title','slug','picture','htmlCode','description'];
     public function category(){
-        return $this->belongsTo(App\Models\Category::class);
+        return $this->belongsTo(\App\Models\Category::class);
     }
     public function department(){
-        return $this->belongsTo(App\Models\Department::class);
+        return $this->belongsTo(\App\Models\Department::class);
     }
     public function user(){
-        return $this->belongsTo(App\User::class);
+        return $this->belongsTo(\App\User::class);
     }
     
 }

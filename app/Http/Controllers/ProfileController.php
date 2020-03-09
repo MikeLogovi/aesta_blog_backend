@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class ProfileController extends Controller
 {
@@ -27,7 +28,12 @@ class ProfileController extends Controller
     public function update(ProfileRequest $request)
     {
         auth()->user()->update($request->all());
-
+        $user=User::findOrFail(auth()->user()->id);
+        if(!empty($request->picture)){
+            $path=unlinkAndUpload($request->file('picture'),$user->picture,'users_img');
+            $user->picture=$path;
+        }         
+        $user->save();
         return back()->withStatus(__('Profile successfully updated.'));
     }
 

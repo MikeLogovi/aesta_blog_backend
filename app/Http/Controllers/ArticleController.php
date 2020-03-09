@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Models\Department;
 use App\Models\Article;
+use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+
 class ArticleController extends Controller
 {
     /**
@@ -15,8 +18,11 @@ class ArticleController extends Controller
      */
     public function index()
     {   
+        $users=User::all();
+        $departments=Department::all();
+        $categories=Category::all();
         $articles=Article::orderBy('updated_at','DESC')->get();
-        return view('articles.index',compact('articles'));
+        return view('articles.index',compact('articles','departments','categories','users'));
     }
 
     /**
@@ -37,20 +43,23 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('isModerator');
+        //$this->authorize('isModerator');
         $this->validate($request,[
             'title'=>'required|unique:articles',
             'picture'=>'required|file|image',
-            'pdf'=>'required|file|pdf',
-            'htmlCode'=>'required'
+            'pdf'=>'required|file',
+            'description'=>'required',
+            'userId'=>'required',
+            'departmentId'=>'required'
         ]);
+        $article = new Article;
         if($request->hasfile('picture')&& $request->file('picture')->isValid()){
             $path=fileUpload($request->file('picture'),'articles_img');
             $article->picture=$path;
         }
         if($request->hasfile('pdf')&& $request->file('pdf')->isValid()){
-            $path=fileUpload($request->file('pdf'),'articles_pdf');
-            $article->pdf=$path;
+            $file=$request->file('pdf');
+            $article->pdf=$file->store('public/storage/articles_pdf');
         }
         if(!empty($request->categoryId)){
             $category=  Category::findOrFail($request->categoryId);
@@ -59,9 +68,9 @@ class ArticleController extends Controller
         $user=User::findOrFail($request->userId);
         $department=Department::findOrfail($request->departmentId);
 
-        $article = new Article;
+       
         $article->title=$request->title;
-        $article->htmlCode=$request->htmlCode;
+        $article->description=$request->description;
         $article->department_id=$department->id;
         $user->articles()->save($article);
         session()->flash('Message', 'Article created successfully');
@@ -86,7 +95,7 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $article=Article::findOrFail($id);
         return view('articles.edit',compact('article'));
@@ -101,7 +110,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $this->authorize('isModerator');
+        //$this->authorize('isModerator');
         if(!empty($request->title)){
             $this->validate($request,[
                 'title'=>'unique:articles'
@@ -113,15 +122,17 @@ class ArticleController extends Controller
             $article->picture=$path;
         }
         if(!empty($request->pdf)){
-            $path=unlinkAndUpload($request->file('pdf'),$article->pdf,'articles_pdf');
-            $article->pdf=$path;
+            Storage::delete($article->pdf);
+            $file=$request->file('pdf');
+            $article->pdf=$file->store('public/storage/articles_pdf');
         }
-        if(!empty($request->htmlCode))
-            $article->htmlCode=$request->htmlCode;
+        if(!empty($request->description))
+            $article->description=$request->description;
         if(!empty($request->categoryId)){
             $category=  Category::findOrFail($request->categoryId);
             $article->category_id=$category->id;
-        }
+        }else
+           $article->category_id=null;
         if(!empty($request->departmentId)){
             $department=Department::findOrfail($request->departmentId);
             $article->department_id=$department->id;
@@ -132,7 +143,7 @@ class ArticleController extends Controller
             $article->user_id=$user->id;
         }
         $article->save();
-        session()->flash('Message', 'Article created successfully');
+        session()->flash('Message', 'Article updated successfully');
         return redirect()->back();
     }
 
@@ -149,5 +160,28 @@ class ArticleController extends Controller
         $article->delete();
         session()->flash('Message', 'Article destroyed successfully');
         return redirect()->back();
+    }
+    public function setHtmlCode(Request $request,$id){
+        $article=Article::findOrFail($id);
+        if(!empty($request->htmlCode)){
+            $article->htmlCode=$request->htmlCode;
+        }
+        if(!empty($request->jsonCode)){
+           
+            $article->jsonCode=$request->jsonCode;
+        }
+        $article->save();
+        session()->flash('Message', 'Article written successfully');
+
+        return ['success'];
+    }
+    public function getJsonCode(Request $request,$id){
+       $article=Article::findOrFail($id);
+       return response()->json($article);
+    }
+    public function downloadPdf(Request $request,$id){
+        $article=Article::findOrFail($id);
+        $a=explode('/',$article->pdf);
+        return Storage::download($article->pdf);
     }
 }

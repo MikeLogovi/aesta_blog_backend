@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\User;
-
+use Illuminate\Support\Str;
 class UserObserver
 {
     /**
@@ -14,9 +14,9 @@ class UserObserver
      */
     public function creating(User $user)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $user->slug=str_slug($user->name);
-        }
+        $user->slug=Str::slug($user->name);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**
@@ -27,9 +27,9 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $user->slug=str_slug($user->name);
-        }
+        $user->slug=Str::slug($user->name);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**

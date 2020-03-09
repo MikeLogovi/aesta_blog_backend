@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/articles/html_editor/{id}','ArticleController@setHtmlCode')->name('article.html_editor_api');
+Route::get('/articles/html_editor/{id}','ArticleController@getJsonCode')->name('article.json_code_api');

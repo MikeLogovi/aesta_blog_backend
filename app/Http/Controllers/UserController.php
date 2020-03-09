@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,9 +19,9 @@ class UserController extends Controller
      */
     public function index()
     { 
-        $users=User::orderBy('updated_at','DESC')->get();
-
-        return view('users.index',compact('users'));
+        $users=User::orderBy('updated_at')->get();
+        $roles=Role::all();
+        return view('users.index',compact('users','roles'));
     }
     public function create()
     {
@@ -33,17 +36,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('isAdmin');
+        // $this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required',
-            'email'=>'required|unique:users',
-            'password'=>'required|same:confpass',
-        ]);
-        $user = new user;
-        foreach($r as $request->role){
-            $role = Role::where('name',$r);
-            $user->roles()->attach($role->id);
-        }
+            'email'=>'required|email|unique:users',
+            'picture'=>'file|image'
+            ]);
+        $user = new User;
+        if(empty($request->roles))
+             return redirect()->back();
+       
+       
         if($request->hasfile('picture')&& $request->file('picture')->isValid()){
             $path=fileUpload($request->file('picture'),'users_img');
             $user->picture=$path;
@@ -51,7 +54,12 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=bcrypt($request->password);
+       
         $user->save();
+        foreach($request->roles as $r){
+            $role = Role::where('name','=',$r)->get()->first();
+            $user->roles()->attach($role->id);
+        }
         session()->flash('Message', 'user created successfully');
         return redirect()->back();
     }
@@ -90,7 +98,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user=auth()->user();
-        $this->authorize('isAdmin');
+        //$this->authorize('isAdmin');
         if(!empty($request->name)){
             $this->validate($request,[
                 'name'=>'required'
@@ -121,7 +129,21 @@ class UserController extends Controller
         
         return redirect()->back();
     }
-
+    function getId($r){
+        return $r->id;
+    }
+   public function grantRoles(Request $request,$id){
+       $user=User::findOrFail($id);
+       $user->roles()->detach();
+       $a=array();
+        foreach($request->roles as $r){
+            $role = Role::where('name','=',$r)->get()->first();
+            array_push($a,$role->id);
+        }
+        $user->roles()->toggle($a);
+        session()->flash('Message', 'Role granted to member '.$user->name.' successfully');
+        return redirect()->back();
+   }
     /**
      * Remove the specified resource from storage.
      *
@@ -130,7 +152,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {   
-        $this->authorize('isAdmin');
+       // $this->authorize('isAdmin');
         $user=User::findOrFail($id);
         if($user->picture)
            Storage::disk('public')->delete($user->picture);

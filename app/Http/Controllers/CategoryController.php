@@ -13,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $categories=Category::all();
+        return view('categories.index',compact('categories'));
     }
 
     /**
@@ -34,12 +35,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {   
-        $this->authorize('isModerator');
+        //$this->authorize('isModerator');
         $this->validate($request,[
             'name'=>'required|unique:categories'
         ]);
         $category = new Category;
         $category->name=$request->name;
+        $category->user_id=auth()->user()->id;
         $category->save();
         session()->flash('Message', 'Category created successfully');
         return redirect()->back();
@@ -53,7 +55,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        return view('categories.show',compact('category'));
+        $category=Category::findOrFail($id);
+        $articles=$category->articles();
+        return view('categories.show',compact('category','articles'));
     }
 
     /**
@@ -76,12 +80,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('isModerator');
+        //$this->authorize('isModerator');
+        $category=Category::findOrFail($id);
         if(!empty($request->name)){
             $this->validate($request,[
-                'name'=>'required|unique:categories'
+                'name'=>'unique:categories'
             ]);
-            $category = new Category;
             $category->name=$request->name;
             $category->save();
             session()->flash('Message', 'Category updated successfully');
@@ -98,7 +102,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isModerator');
+        //$this->authorize('isModerator');
         $category=Category::findOrFail($id);
         $category->delete();
         session()->flash('Message', 'Category deleted successfully');

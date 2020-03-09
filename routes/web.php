@@ -19,13 +19,17 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('user', 'UserController', ['except' => ['show']]);
+	Route::resource('user', 'UserController');
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 	Route::resource('departments','DepartmentController');
 	Route::resource('categories','CategoryController');
 	Route::resource('articles','ArticleController');
+	Route::resource('categories.articles','CategoryController');
 	Route::resource('roles','RoleController');
+	Route::get('/articles/html_editor/{id}','ArticleController@edit')->name('article.html_editor');
+    Route::post('/members/grant_roles/{id}','UserController@grantRoles')->name('user.grant_roles');
+    Route::get('/articles/download_pdf/{id}','ArticleController@downloadPdf')->name('article.download');
 });
 

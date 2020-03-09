@@ -42,6 +42,8 @@
         @stack('js')
         
         <!-- Argon JS -->
+        
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
+
     </body>
 </html>

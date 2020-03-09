@@ -7,19 +7,34 @@
                         <div class="bigTitle text-center mt-2 mb-3">Department Creation</div>
                     </div>
                     <div class="card-body px-lg-5 py-lg-5">
-                        <form role="form">
-                          
+                        <form role="form" method="post" enctype="multipart/form-data" action="{{route('departments.store')}}">
+                          {{csrf_field()}}
                             <div class="form-group">
+                                <label for="customFileLang">Name</label>
+
                                 <div class="input-group input-group-merge input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-fat-add"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="Department's name" type="text">
+                                    <input class="form-control" placeholder="Department's name" type="text" name="name">
                                 </div>
+                                @if($errors->has('name'))
+                                    <small class="text-danger">
+                                    {{$errors->first('name')}}
+                                    </small>
+                                @endif
                             </div>
-                            
+                            <div class="form-group">
+                                <label for="customFileLang">Brand image file</label>
+                                <input type="file" class="form-control" id="customFileLang" lang="en" name="picture">
+                                @if($errors->has('picture'))
+                                    <small class="text-danger">
+                                        {{$errors->first('picture')}}
+                                    </small>
+                                @endif
+                            </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-primary my-4">Create</button>
+                                <button type="submit" class="btn btn-primary my-4">Create</button>
                             </div>
                         </form>
                     </div>

@@ -18,7 +18,8 @@
                         </div>
                         <div class="col-4 text-right">
                         <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#member">Add a member</button>                           
-                       @include('includes.members.create')
+                            @include('includes.members.create')
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -32,29 +33,54 @@
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Creation Date</th>
-                                <th scope="col"></th>
+                                <th scope="col">Picure</th>
+                                <th scope="col">Roles</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                                                                <tr>
-                                    <td>Admin Admin</td>
+                             @foreach($users as $user)
+                             <tr>
+                                    <td>{{$user->name}}</td>
                                     <td>
-                                        <a href="mailto:admin@argon.com">admin@argon.com</a>
+                                        <a href="mailto:{{$user->email}}">{{$user->email}}</a>
                                     </td>
-                                    <td>12/02/2020 11:00</td>
+                                    <td>
+                                       @if($user->picture)
+                                          <a href="{{asset('/storage/'.$user->picture)}}"><img width=100 height=60 src="{{asset('/storage/'.$user->picture)}}" alt="image de l'utilisateur"/></a>
+                                       @else
+                                       <a href="{{ asset('argon') }}/img/theme/team-4-800x800.jpg"><img width=100 height=60 src="{{ asset('argon') }}/img/theme/team-4-800x800.jpg" alt="image de l'utilisateur"/></a>
+
+                                       
+                                       @endif
+                                    </td>
+                                    <td>
+                                        @foreach($user->roles as $role)
+                                           <span style="color:red">{{$role->name}}</span>
+                                           @if(!$loop->last)
+                                                |
+                                           @endif
+                                        @endforeach
+                                    </td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                                                                        <a class="dropdown-item" href="">Edit</a>
-                                                                                                </div>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-center">
+                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#memberRoles{{$user->id}}">Grant Roles</button>                           
+                                                 <form method="post" action="{{route('user.destroy',$user->id)}}" class="form_delete">
+                                                   {{method_field('delete')}}
+                                                   {{csrf_field()}}
+                                                   <button class="btn btn-danger" type="submit" >Delete</button>
+                                                 </form>
+                                            </div>
+                                            @include('includes.members.grant_roles',['user'=>$user,'roles'=>$roles])
                                         </div>
                                     </td>
                                 </tr>
-                                                        </tbody>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
                 <div class="card-footer py-4">

@@ -19,7 +19,9 @@ class CreateArticlesTable extends Migration
             $table->string('title')->unique();
             $table->string('slug')->nullable();
             $table->string('picture');
+            $table->text('description');
             $table->longText('htmlCode')->nullable();
+            $table->longText('jsonCode')->nullable();
             $table->string('pdf');
             $table->timestamps();
         });

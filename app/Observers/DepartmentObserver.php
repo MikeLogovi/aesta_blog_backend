@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Observers;
-
+use illuminate\Support\Str;
 use App\Models\Department;
 
 class DepartmentObserver
@@ -14,9 +14,11 @@ class DepartmentObserver
      */
     public function creating(Department $department)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $department->slug=str_slug($department->name);
-        }
+        $department->slug=Str::slug($department->name);
+
+        /*if(in_array('admin',auth()->user()->roles()->toArray()) || in_array('moderator',auth()->user()->roles()->toArray())){
+        }*/
+
     }
 
     /**
@@ -27,9 +29,9 @@ class DepartmentObserver
      */
     public function updating(Department $department)
     {
-        if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-            $department->slug=str_slug($department->name);
-        }
+        $department->slug=Str::slug($department->name);
+        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
+        }*/
     }
 
     /**
