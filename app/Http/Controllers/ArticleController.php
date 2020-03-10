@@ -184,4 +184,19 @@ class ArticleController extends Controller
         $a=explode('/',$article->pdf);
         return Storage::download($article->pdf);
     }
+    public function getSlideArticles(Request $request){
+        $departments=Department::all();
+        $array=[];
+        foreach($departments as $department){
+            $articles=Article::where('department_id',$department->id)->orderBy('updated_at','DESC')->limit(2)->get();
+            $articles->load('user','category','department');
+            array_push($array,$articles);
+        }
+        return response()->json($array);
+    }
+    public function homePageArticles(Request $request){
+        $articles=Article::orderBy('created_at','DESC')->limit(7)->get();
+        $articles->load('user','category','department');
+        return $articles;
+    }
 }

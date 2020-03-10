@@ -9,7 +9,7 @@ class Category extends Model
     use partage;
     public $fillable=['name','slug'];
     public function articles(){
-        return $this->hasMany(App\Models\Department::class);
+        return $this->hasMany(\App\Models\Article::class);
     }
   
 }

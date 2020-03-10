@@ -18,3 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/articles/html_editor/{id}','ArticleController@setHtmlCode')->name('article.html_editor_api');
 Route::get('/articles/html_editor/{id}','ArticleController@getJsonCode')->name('article.json_code_api');
+Route::middleware(['cors'])->group(function () {
+    Route::get('/articles/sliders','ArticleController@getSlideArticles');
+    Route::get('/categories','CategoryController@indexApi');
+    Route::get('/articles/homepage','ArticleController@homePageArticles');
+});

@@ -16,6 +16,10 @@ class CategoryController extends Controller
         $categories=Category::all();
         return view('categories.index',compact('categories'));
     }
+    public function indexApi(){
+        $categories=Category::with('articles')->orderBy('updated_at','DESC')->get();
+        return $categories;
+    }
 
     /**
      * Show the form for creating a new resource.

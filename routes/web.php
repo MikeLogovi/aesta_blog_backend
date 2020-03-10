@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('roles','RoleController');
 	Route::get('/articles/html_editor/{id}','ArticleController@edit')->name('article.html_editor');
     Route::post('/members/grant_roles/{id}','UserController@grantRoles')->name('user.grant_roles');
-    Route::get('/articles/download_pdf/{id}','ArticleController@downloadPdf')->name('article.download');
+	Route::get('/articles/download_pdf/{id}','ArticleController@downloadPdf')->name('article.download');
+	
 });
 
