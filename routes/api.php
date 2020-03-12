@@ -19,7 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/articles/html_editor/{id}','ArticleController@setHtmlCode')->name('article.html_editor_api');
 Route::get('/articles/html_editor/{id}','ArticleController@getJsonCode')->name('article.json_code_api');
 Route::middleware(['cors'])->group(function () {
+    Route::get('/articles/popular','ArticleController@getPopularArticles');
     Route::get('/articles/sliders','ArticleController@getSlideArticles');
     Route::get('/categories','CategoryController@indexApi');
     Route::get('/articles/homepage','ArticleController@homePageArticles');
+    Route::get('/articles/{slug}','ArticleController@getApiDepartment');
+    Route::get('/article/{slug}','ArticleController@getApiArticle');
+    Route::get('/setlike/article/{id}','ArticleController@setLikes');
+    Route::get('/category/{slug}','CategoryController@showApi');
+    Route::get('search/{keywords}','SearchController@search');
 });

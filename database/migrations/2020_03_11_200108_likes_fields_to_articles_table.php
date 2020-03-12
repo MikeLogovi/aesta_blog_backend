@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SetCategoryIdArticleNullable extends Migration
+class LikesFieldsToArticlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class SetCategoryIdArticleNullable extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->bigInteger('category_id')->nullable(false)->change();
+            $table->bigInteger('likes')->default(0);
         });
     }
 

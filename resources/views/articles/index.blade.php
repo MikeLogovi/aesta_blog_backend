@@ -53,7 +53,7 @@
                                             Not categorized
                                         @endif
                                     </td>
-                                    <td>{{$article->department->first()->name}}</td>
+                                    <td>{{$article->department->name}}</td>
                                     <td><a class="btn btn-success" href="{{route('article.download',$article->id)}}">DOWNLOAD</a></td>
                                     <td class="text-right">
                                         <div class="dropdown">

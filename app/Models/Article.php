@@ -9,7 +9,7 @@ class Article extends Model
     public function getRouteKeyName(){
         return 'slug';
     }
-    public $fillable=['title','slug','picture','htmlCode','description'];
+    public $fillable=['title','slug','picture','htmlCode','description','likes'];
     public function category(){
         return $this->belongsTo(\App\Models\Category::class);
     }

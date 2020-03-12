@@ -9,6 +9,6 @@ class Department extends Model
     use partage;
     public $fillable=['name','slug','picture'];
     public function articles(){
-        return $this->hasMany(App\Models\Article::class);
+        return $this->hasMany(\App\Models\Article::class);
     }
 }

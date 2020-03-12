@@ -63,7 +63,11 @@ class CategoryController extends Controller
         $articles=$category->articles();
         return view('categories.show',compact('category','articles'));
     }
-
+    public function showApi(Request $request,$slug){
+        $category=Category::with('articles')->where('slug',$slug)->first();
+        $category->articles->load('user','department');
+        return $category;
+    }
     /**
      * Show the form for editing the specified resource.
      *

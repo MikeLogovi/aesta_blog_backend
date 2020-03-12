@@ -12,7 +12,7 @@ class CategoryObserver
      * @param  \App\Models\Category  $category
      * @return void
      */
-    public function created(Category $category)
+    public function creating(Category $category)
     {
         $category->slug=Str::slug($category->name);
         /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
@@ -20,12 +20,12 @@ class CategoryObserver
     }
 
     /**
-     * Handle the category "updated" event.
+     * Handle the category "updating" event.
      *
      * @param  \App\Models\Category  $category
      * @return void
      */
-    public function updated(Category $category)
+    public function updating(Category $category)
     {
         $category->slug=Str::slug($category->name);
         /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){

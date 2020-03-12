@@ -199,4 +199,25 @@ class ArticleController extends Controller
         $articles->load('user','category','department');
         return $articles;
     }
+    public function getApiDepartment(Request $request,$slug){
+          $department=Department::with('articles')->where('slug',$slug)->first();
+          $department->articles->load('user');
+          return $department;
+    }
+    public function getApiArticle(Request $request,$slug){
+          $article=Article::where('slug',$slug)->first();
+          $article->load('user','department','category');
+          return $article;
+    }
+    public function setLikes(Request $request,$id){
+        $article=Article::findOrFail($id);
+        $article->likes++;
+        $article->save();
+        return $article;
+    }
+    public function getPopularArticles(Request $request){
+        $articles=Article::orderBy('likes','DESC')->limit(4)->get();
+        $articles->load('department');
+        return $articles;
+    }
 }
