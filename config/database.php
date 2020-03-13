@@ -50,7 +50,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('APP_ENV')=='PRODUCTION' ? 'c7dgx6ou5dg2s9dx' :env('DB_DATABASE', 'forge'),
             'username' => env('APP_ENV')=='PRODUCTION' ? 'vbbpbhx3eur7au39' :env('DB_USERNAME', 'forge'),
-            'password' => env('APP_ENV')=='PRODUCTION' ? 'c7dgx6ou5dg2s9dx' :env('DB_PASSWORD', ''),
+            'password' => env('APP_ENV')=='PRODUCTION' ? 'uwmq77trzcv675ns' :env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
