@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\User;
 class CategoryObserver
 {
     /**
@@ -14,9 +15,13 @@ class CategoryObserver
      */
     public function creating(Category $category)
     {
-        $category->slug=Str::slug($category->name);
-        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-        }*/
+        $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                $category->slug=Str::slug($category->name);
+        }
+        
     }
 
     /**
@@ -27,9 +32,13 @@ class CategoryObserver
      */
     public function updating(Category $category)
     {
-        $category->slug=Str::slug($category->name);
-        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-        }*/
+        $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                $category->slug=Str::slug($category->name);
+        }
+        
     }
 
     /**

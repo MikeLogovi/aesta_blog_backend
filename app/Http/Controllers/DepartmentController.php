@@ -37,7 +37,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //$this->authorize('isAdmin');
+       $this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required|unique:departments',
             'picture'=>'required|file|image'
@@ -84,7 +84,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {   
-        //$this->authorize('isAdmin');
+        $this->authorize('isAdmin');
         if(!empty($request->name)){
             $this->validate($request,[
                 'name'=>'unique:departments'
@@ -108,7 +108,7 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {   
-        //$this->authorize('isAdmin');
+        $this->authorize('isAdmin');
         $department=Department::findOrFail($id);
         Storage::disk('public')->delete($department->picture);
 

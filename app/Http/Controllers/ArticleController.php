@@ -43,7 +43,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //$this->authorize('isModerator');
+        $this->authorize('isAuthorized');
         $this->validate($request,[
             'title'=>'required|unique:articles',
             'picture'=>'required|file|image',
@@ -97,6 +97,7 @@ class ArticleController extends Controller
      */
     public function edit(Request $request,$id)
     {
+        $this->authorize('isAuthorized');
         $article=Article::findOrFail($id);
         return view('articles.edit',compact('article'));
     }
@@ -110,7 +111,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //$this->authorize('isModerator');
+        $this->authorize('isAuthorized');
         if(!empty($request->title)){
             $this->validate($request,[
                 'title'=>'unique:articles'
@@ -155,6 +156,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('isAuthorized');
         $article=Article::findOrFail($id);
         Storage::disk('public')->delete($article->picture);
         $article->delete();
@@ -162,6 +164,7 @@ class ArticleController extends Controller
         return redirect()->back();
     }
     public function setHtmlCode(Request $request,$id){
+        $this->authorize('isAuthorized');
         $article=Article::findOrFail($id);
         if(!empty($request->htmlCode)){
             $article->htmlCode=$request->htmlCode;

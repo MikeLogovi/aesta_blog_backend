@@ -39,7 +39,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {   
-        //$this->authorize('isModerator');
+        $this->authorize('isAuthorized');
         $this->validate($request,[
             'name'=>'required|unique:categories'
         ]);
@@ -88,7 +88,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //$this->authorize('isModerator');
+        $this->authorize('isAuthorized');
         $category=Category::findOrFail($id);
         if(!empty($request->name)){
             $this->validate($request,[
@@ -110,7 +110,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //$this->authorize('isModerator');
+        $this->authorize('isAuthorized');
         $category=Category::findOrFail($id);
         $category->delete();
         session()->flash('Message', 'Category deleted successfully');

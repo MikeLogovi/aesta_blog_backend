@@ -22846,6 +22846,20 @@ var MyTool = /*#__PURE__*/function () {
   return MyTool;
 }();
 
+function makeRead(id) {
+  $.ajax({
+    url: window.websiteURL + '/api/messages/makeRead/' + id,
+    type: 'get',
+    dataType: 'html',
+    success: function success(code_html, statut) {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.fire('Good job!', 'Your article has been edited successfully!', 'success');
+    },
+    error: function error(code_html, statut) {
+      console.log('error');
+    }
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

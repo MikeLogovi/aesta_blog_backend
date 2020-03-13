@@ -3,7 +3,7 @@
 namespace App\Observers;
 use illuminate\Support\Str;
 use App\Models\Department;
-
+use App\User;
 class DepartmentObserver
 {
     /**
@@ -14,11 +14,12 @@ class DepartmentObserver
      */
     public function creating(Department $department)
     {
-        $department->slug=Str::slug($department->name);
-
-        /*if(in_array('admin',auth()->user()->roles()->toArray()) || in_array('moderator',auth()->user()->roles()->toArray())){
-        }*/
-
+        $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                $department->slug=Str::slug($department->name);
+        }
     }
 
     /**
@@ -29,9 +30,13 @@ class DepartmentObserver
      */
     public function updating(Department $department)
     {
-        $department->slug=Str::slug($department->name);
-        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-        }*/
+        $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                $department->slug=Str::slug($department->name);
+        }
+       
     }
 
     /**

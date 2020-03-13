@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Article;
 use Illuminate\Support\Str;
+use App\User;
 class ArticleObserver
 {
     /**
@@ -13,10 +14,13 @@ class ArticleObserver
      * @return void
      */
     public function creating(Article $article)
-    {
-        $article->slug=Str::slug($article->title);
-        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-        }*/
+    {    $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                 $article->slug=Str::slug($article->title);
+        }
+        
     }
 
     /**
@@ -26,10 +30,13 @@ class ArticleObserver
      * @return void
      */
     public function updating(Article $article)
-    {
-        $article->slug=Str::slug($article->title);
-        /*if(in_array('admin',auth()->user()->roles()) || in_array('moderator',auth()->user()->roles())){
-        }*/
+    {  
+        $user=User::findOrFail(auth()->user()->id);
+        $roles=$user->roles()->get();
+        foreach($roles as $role){
+            if('Moderator'==$role->name || 'Administrator'==$role->name)
+                 $article->slug=Str::slug($article->title);
+        }
     }
 
     /**
