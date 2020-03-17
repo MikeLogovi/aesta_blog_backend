@@ -46,8 +46,8 @@
                                         <a href="mailto:{{$user->email}}">{{$user->email}}</a>
                                     </td>
                                     <td>
-                                       @if($user->picture)
-                                          <a href="{{asset('/storage/'.$user->picture)}}"><img width=100 height=60 src="{{asset('/storage/'.$user->picture)}}" alt="image de l'utilisateur"/></a>
+                                       @if($user->picture!=null || $user->picture_link!=null)
+                                          <a href="@if($user->picture){{asset('/storage/'.$user->picture)}} @else {{$user->picture_link}} @endif"><img width=100 height=60 src="@if($user->picture){{asset('/storage/'.$user->picture)}} @else {{$user->picture_link}} @endif" alt="image de l'utilisateur"/></a>
                                        @else
                                        <a href="{{ asset('argon') }}/img/theme/team-4-800x800.jpg"><img width=100 height=60 src="{{ asset('argon') }}/img/theme/team-4-800x800.jpg" alt="image de l'utilisateur"/></a>
 

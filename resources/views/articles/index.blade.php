@@ -46,7 +46,7 @@
                             <tr>
                                     <td><a href="{{route('articles.show',$article->id)}}">{{$article->title}}</a></td>
                                     <td><a href="{{route('user.show',$article->user()->first()->id)}}">{{$article->user()->first()->name}}</a></td>
-                                    <td><a href="{{route('articles.show',$article->id)}}"><img width=100 height=60 src="{{asset('/storage/'.$article->picture)}}" alt="Image d'article"></a></td>
+                                    <td><a href="{{route('articles.show',$article->id)}}"><img width=100 height=60 src="@if($article->picture){{asset('/storage/'.$article->picture)}} @else {{$article->picture_link}} @endif" alt="Image d'article"></a></td>
                                     <td>@if($article->category!=null)
                                         <a href="{{route('categories.show',$article->category->id)}}">{{$article->category->name}}</a>
                                         @else
@@ -54,7 +54,7 @@
                                         @endif
                                     </td>
                                     <td>{{$article->department->name}}</td>
-                                    <td><a class="btn btn-success" href="{{route('article.download',$article->id)}}">DOWNLOAD</a></td>
+                                    <td><a class="btn btn-success" href="@if($article->pdf){{route('article.download',$article->id)}} @else {{$article->pdf_link}} @endif">DOWNLOAD</a></td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -27,7 +27,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="customFileLang">Brand image file</label>
-                                <input type="file" class="form-control" id="customFileLang" lang="en" name="picture">
+                                <input disabled type="file" class="form-control" id="customFileLang" lang="en" name="picture">
+                            
+                            </div>
+                            <div class="form-group">
+                                <label for="customFileLang">Brand image file</label>
+                                <input type="text" class="form-control" id="customFileLang" lang="en" name="picture_link">
                             
                             </div>
                             <div class="text-center">

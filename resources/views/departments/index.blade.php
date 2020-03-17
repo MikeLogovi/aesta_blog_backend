@@ -42,7 +42,7 @@
                               <tr>
                                     <td>{{$department->name}}</td>
                                     <td>
-                                        <a href="{{asset('/storage/'.$department->picture)}}"><img width=100 height=60 src="{{asset('/storage/'.$department->picture)}}" alt="{{$department->name}}'s picture"/></a>
+                                        <a href="@if($department->picture){{asset('/storage/'.$department->picture)}} @else {{$department->picture_link}} @endif"><img width=100 height=60 src="@if($department->picture){{asset('/storage/'.$department->picture)}} @else {{$department->picture_link}} @endif" alt="{{$department->name}}'s picture"/></a>
                                     </td>
                                     <td>{{$department->updated_at}}</td>
                                     <td class="text-right">

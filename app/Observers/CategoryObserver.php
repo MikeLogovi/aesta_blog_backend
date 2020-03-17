@@ -15,13 +15,7 @@ class CategoryObserver
      */
     public function creating(Category $category)
     {
-        $user=User::findOrFail(auth()->user()->id);
-        $roles=$user->roles()->get();
-        foreach($roles as $role){
-            if('Moderator'==$role->name || 'Administrator'==$role->name)
-                $category->slug=Str::slug($category->name);
-        }
-        
+        $category->slug=Str::slug($category->name);        
     }
 
     /**
@@ -32,13 +26,7 @@ class CategoryObserver
      */
     public function updating(Category $category)
     {
-        $user=User::findOrFail(auth()->user()->id);
-        $roles=$user->roles()->get();
-        foreach($roles as $role){
-            if('Moderator'==$role->name || 'Administrator'==$role->name)
-                $category->slug=Str::slug($category->name);
-        }
-        
+        $category->slug=Str::slug($category->name);   
     }
 
     /**

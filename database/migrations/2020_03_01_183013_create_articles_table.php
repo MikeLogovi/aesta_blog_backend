@@ -18,11 +18,13 @@ class CreateArticlesTable extends Migration
           
             $table->string('title')->unique();
             $table->string('slug')->nullable();
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->text('description');
             $table->longText('htmlCode')->nullable();
             $table->longText('jsonCode')->nullable();
-            $table->string('pdf');
+            $table->string('pdf')->nullable();
+            $table->string('picture_link')->nullable();
+            $table->string('pdf_link')->nullable();
             $table->timestamps();
         });
     }

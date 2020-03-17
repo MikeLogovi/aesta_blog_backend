@@ -14,12 +14,8 @@ class ArticleObserver
      * @return void
      */
     public function creating(Article $article)
-    {    $user=User::findOrFail(auth()->user()->id);
-        $roles=$user->roles()->get();
-        foreach($roles as $role){
-            if('Moderator'==$role->name || 'Administrator'==$role->name)
-                 $article->slug=Str::slug($article->title);
-        }
+    {  
+        $article->slug=Str::slug($article->title);
         
     }
 
@@ -30,13 +26,8 @@ class ArticleObserver
      * @return void
      */
     public function updating(Article $article)
-    {  
-        $user=User::findOrFail(auth()->user()->id);
-        $roles=$user->roles()->get();
-        foreach($roles as $role){
-            if('Moderator'==$role->name || 'Administrator'==$role->name)
-                 $article->slug=Str::slug($article->title);
-        }
+    {  $article->slug=Str::slug($article->title);
+        
     }
 
     /**

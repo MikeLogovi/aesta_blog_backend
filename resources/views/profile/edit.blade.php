@@ -84,10 +84,19 @@
                                 </div>
                                 <div class="form-group">
                                  <label for="customFileLang">Profile picture</label>
-                                    <input type="file" class="form-control" id="customFileLang" lang="en" name="picture">
+                                    <input disabled type="file" class="form-control" id="customFileLang" lang="en" name="picture">
                                     @if($errors->has('picture'))
                                             <small class="text-danger">
                                             {{$errors->first('picture')}}
+                                            </small>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                 <label for="customFileLang">Profile picture link</label>
+                                    <input  type="text" class="form-control" id="customFileLang" lang="en" name="picture_link">
+                                    @if($errors->has('picture_link'))
+                                            <small class="text-danger">
+                                            {{$errors->first('picture_link')}}
                                             </small>
                                     @endif
                                 </div>

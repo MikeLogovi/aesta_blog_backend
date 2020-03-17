@@ -46,8 +46,8 @@ class ArticleController extends Controller
         $this->authorize('isAuthorized');
         $this->validate($request,[
             'title'=>'required|unique:articles',
-            'picture'=>'required|file|image',
-            'pdf'=>'required|file',
+            'picture_link'=>'required',
+            'pdf_link'=>'required',
             'description'=>'required',
             'userId'=>'required',
             'departmentId'=>'required'
@@ -72,6 +72,8 @@ class ArticleController extends Controller
         $article->title=$request->title;
         $article->description=$request->description;
         $article->department_id=$department->id;
+        $article->pdf_link=$request->pdf_link;
+        $article->picture_link=$request->picture_ink;
         $user->articles()->save($article);
         session()->flash('Message', 'Article created successfully');
         return redirect()->back();
@@ -122,6 +124,12 @@ class ArticleController extends Controller
             $path=unlinkAndUpload($request->file('picture'),$article->picture,'articles');
             $article->picture=$path;
         }
+        if(!empty($request->picture_link)){
+            $article->picture=$request->picture_link;
+        }
+        if(!empty($request->pdf_link)){
+            $article->pdf_link=$request->pdf_link;
+        }
         if(!empty($request->pdf)){
             Storage::delete($article->pdf);
             $file=$request->file('pdf');
@@ -158,13 +166,13 @@ class ArticleController extends Controller
     {
         $this->authorize('isAuthorized');
         $article=Article::findOrFail($id);
-        Storage::disk('public')->delete($article->picture);
+        if($article->picture)
+            Storage::disk('public')->delete($article->picture);
         $article->delete();
         session()->flash('Message', 'Article destroyed successfully');
         return redirect()->back();
     }
     public function setHtmlCode(Request $request,$id){
-        $this->authorize('isAuthorized');
         $article=Article::findOrFail($id);
         if(!empty($request->htmlCode)){
             $article->htmlCode=$request->htmlCode;

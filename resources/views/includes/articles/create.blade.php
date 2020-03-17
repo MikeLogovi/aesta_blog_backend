@@ -65,7 +65,7 @@
                         </div>
                         <div class="form-group">
                             <label for="customFileLang">PDF file</label>
-                            <input type="file" class="form-control" id="customFileLang" lang="en" name="pdf">
+                            <input disabled type="file" class="form-control" id="customFileLang" lang="en" name="pdf">
                             @if($errors->has('pdf'))
                                     <small class="text-danger">
                                     {{$errors->first('pdf')}}
@@ -73,11 +73,29 @@
                             @endif
                         </div>
                         <div class="form-group">
+                            <label for="customFileLang">PDF file link </label>
+                            <input  type="text" class="form-control" name="pdf_link">
+                            @if($errors->has('pdf_link'))
+                                    <small class="text-danger">
+                                    {{$errors->first('pdf_link')}}
+                                    </small>
+                            @endif
+                        </div>
+                        <div class="form-group">
                             <label for="customFileLang">Brand image file</label>
-                            <input type="file" class="form-control" id="customFileLang" lang="en" name="picture">
+                            <input disabled type="file" class="form-control" id="customFileLang" lang="en" name="picture">
                             @if($errors->has('picture'))
                                     <small class="text-danger">
                                     {{$errors->first('picture')}}
+                                    </small>
+                             @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="customFileLang">Brand image file link</label>
+                            <input  type="text" class="form-control" id="customFileLang" lang="en" name="picture_link">
+                            @if($errors->has('picture_link'))
+                                    <small class="text-danger">
+                                    {{$errors->first('picture_link')}}
                                     </small>
                              @endif
                         </div>

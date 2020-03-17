@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default('$2y$10$yNWCXKxz6QfpPPHg5B8Pc.D5Ey.rwXed8ZxUKrFwAFqSZQQsbNRq2'); //aesta_user_default
             $table->string('picture')->nullable();
+            $table->string('picture_link')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

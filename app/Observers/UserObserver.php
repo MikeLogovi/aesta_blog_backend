@@ -26,12 +26,7 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        $connected=User::findOrFail(auth()->user()->id);
-        $roles=$user->roles()->get();
-        foreach($roles as $role){
-            if('Moderator'==$role->name || 'Administrator'==$role->name)
-                $user->slug=Str::slug($user->name);
-        }
+        $user->slug=Str::slug($user->name);
     }
     /**
      * Handle the user "deleted" event.

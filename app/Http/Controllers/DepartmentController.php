@@ -40,13 +40,14 @@ class DepartmentController extends Controller
        $this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required|unique:departments',
-            'picture'=>'required|file|image'
+            'picture_link'=>'required'
         ]);
         $department = new Department;
         if($request->hasfile('picture')&& $request->file('picture')->isValid()){
             $path=fileUpload($request->file('picture'),'departments_img');
             $department->picture=$path;
         }
+        $department->picture_link=$request->picture_link;
         $department->name=$request->name;
         $department->save();
         session()->flash('Message', 'Department created successfully');
@@ -95,6 +96,9 @@ class DepartmentController extends Controller
             $path=unlinkAndUpload($request->file('picture'),$department->picture,'departments_img');
             $department->picture=$path;
         }
+        if(!empty($request->picture_link)){
+            $department->picture_link=$request->picture_link;
+        }
         $department->save();
         session()->flash('Message', 'Departement updated successfully');
         return redirect()->back();
@@ -110,7 +114,8 @@ class DepartmentController extends Controller
     {   
         $this->authorize('isAdmin');
         $department=Department::findOrFail($id);
-        Storage::disk('public')->delete($department->picture);
+        if($department->picture)
+            Storage::disk('public')->delete($department->picture);
 
         $department->delete();
         session()->flash('Message', 'Department destroyed successfully');

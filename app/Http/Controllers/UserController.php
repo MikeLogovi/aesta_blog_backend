@@ -40,7 +40,7 @@ class UserController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'email'=>'required|email|unique:users',
-            'picture'=>'file|image'
+            'picture_link'=>'required'
             ]);
         $user = new User;
         if(empty($request->roles))
@@ -54,7 +54,7 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=bcrypt($request->password);
-       
+       $user->picture_link=$request->picture_link;
         $user->save();
         foreach($request->roles as $r){
             $role = Role::where('name','=',$r)->get()->first();
@@ -122,7 +122,10 @@ class UserController extends Controller
         if(!empty($request->picture)){
             $path=unlinkAndUpload($request->file('picture'),$article->picture,'uesrs_img');
             $user->picture=$path;
-        }         
+        }   
+        if(!empty($request->picture_link)){
+            $user->picture_link=$request->picture_link;
+        }          
         $user->save();
         session()->flash('Message', 'Profil updated successfully');
 
