@@ -73,7 +73,7 @@ class ArticleController extends Controller
         $article->description=$request->description;
         $article->department_id=$department->id;
         $article->pdf_link=$request->pdf_link;
-        $article->picture_link=$request->picture_ink;
+        $article->picture_link=$request->picture_link;
         $user->articles()->save($article);
         session()->flash('Message', 'Article created successfully');
         return redirect()->back();
@@ -125,7 +125,7 @@ class ArticleController extends Controller
             $article->picture=$path;
         }
         if(!empty($request->picture_link)){
-            $article->picture=$request->picture_link;
+            $article->picture_link=$request->picture_link;
         }
         if(!empty($request->pdf_link)){
             $article->pdf_link=$request->pdf_link;
@@ -212,7 +212,7 @@ class ArticleController extends Controller
     }
     public function getApiDepartment(Request $request,$slug){
           $department=Department::with('articles')->where('slug',$slug)->first();
-          $department->articles->load('user');
+          $department->articles->load('user','category');
           return $department;
     }
     public function getApiArticle(Request $request,$slug){

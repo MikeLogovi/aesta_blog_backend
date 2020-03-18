@@ -96,7 +96,7 @@
    
                         <div class="form-group">
                             <label for="customFileLang">Brand image file link</label>
-                            <input type="file" class="form-control" id="customFileLang" lang="en" name="picture_link">
+                            <input type="text" class="form-control" id="customFileLang" lang="en" name="picture_link">
                             @if($errors->has('picture_link'))
                                     <small class="text-danger">
                                     {{$errors->first('picture_link')}}
